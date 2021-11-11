@@ -1,14 +1,10 @@
 package com.supermamilogisticaservice.models;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "User")
 @Table(name = "\"Usuarios\"", schema = "public")
-@OnDelete(action = OnDeleteAction.CASCADE)
 @PrimaryKeyJoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_user_employee"))
 public class User extends Employee implements Serializable {
 
@@ -18,11 +14,12 @@ public class User extends Employee implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "id_rol", nullable = false)
-    private int id_rol;
+    @ManyToOne()
+    @JoinColumn(name = "id_rol", foreignKey = @ForeignKey(name = "fk_employee_rol", value = ConstraintMode.CONSTRAINT))
+    private Rol rol;
 
-    @Column(name = "estado", nullable = false)
-    private Boolean status = true;
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = Boolean.FALSE;
 
     public String getUsername() {
         return username;
@@ -40,19 +37,19 @@ public class User extends Employee implements Serializable {
         this.password = password;
     }
 
-    public int getId_rol() {
-        return id_rol;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setId_rol(int id_rol) {
-        this.id_rol = id_rol;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
